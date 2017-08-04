@@ -34,7 +34,7 @@ import (
 )
 
 var (
-	MAX_CONNECTION_TIMEOUT = 10 * time.Second
+	MAX_CONNECTION_TIMEOUT = 600 * time.Second
 )
 
 func getContext() context.Context {

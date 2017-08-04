@@ -43,7 +43,7 @@ import (
 
 const (
 	// DefaultClientTimeout - default timeout for RPC method completion
-	DefaultClientTimeout = time.Second * 60
+	DefaultClientTimeout = time.Second * 600
 	// DefaultHealthCheckTimeout - default timeout for a health check
 	DefaultHealthCheckTimeout = time.Second * 30
 	// DefaultHealthCheckFailureLimit - how any consecutive health check timeouts must occur to trigger a failure
