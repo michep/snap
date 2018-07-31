@@ -30,7 +30,7 @@ import (
 	"github.com/intelsdi-x/snap/control/plugin/encoding"
 	"github.com/intelsdi-x/snap/core"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -140,6 +140,7 @@ func TestCollectorProxy(t *testing.T) {
 			c.CollectMetrics(out, &reply)
 			var mtr CollectMetricsReply
 			err = c.Session.Decode(reply, &mtr)
+			So(err, ShouldBeNil)
 			So(mtr.PluginMetrics[0].Namespace().String(), ShouldResemble, "/foo/test/bar")
 			So(mtr.PluginMetrics[0].Namespace()[1].Name, ShouldEqual, "test")
 

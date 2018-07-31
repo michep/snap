@@ -31,8 +31,8 @@ import (
 	"testing"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/intelsdi-x/gomit"
+	log "github.com/sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
 
 	"github.com/intelsdi-x/snap/control/fixtures"
@@ -242,7 +242,7 @@ func TestSecureStreamingCollector(t *testing.T) {
 					mtsin := []core.Metric{}
 					m := plugin.MetricType{Namespace_: core.NewNamespace(strings.Fields("a b integer")...)}
 					mtsin = append(mtsin, m)
-					mch, errch, err := cli.StreamMetrics(mtsin)
+					mch, errch, err := cli.StreamMetrics("test-taskID", mtsin)
 					So(err, ShouldBeNil)
 					Convey("streaming should deliver metrics rather than error", func() {
 						select {

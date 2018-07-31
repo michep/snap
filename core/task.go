@@ -27,7 +27,7 @@ import (
 	"io/ioutil"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/intelsdi-x/snap/core/serror"
 	"github.com/intelsdi-x/snap/pkg/schedule"
@@ -307,7 +307,15 @@ func CreateTaskFromContent(body io.ReadCloser,
 		var errMsg string
 		for _, e := range errs.Errors() {
 			errMsg = errMsg + e.Error() + " -- "
+
+			log.WithFields(log.Fields{
+				"_file":     "core/task.go",
+				"_function": "CreateTaskFromContent",
+				"_error":    e.Error(),
+				"_fields":   e.Fields(),
+			}).Error("error creating task")
 		}
+
 		return nil, errors.New(errMsg[:len(errMsg)-4])
 	}
 	return task, nil

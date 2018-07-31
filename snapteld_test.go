@@ -131,6 +131,18 @@ func TestSnapConfig(t *testing.T) {
 	})
 }
 
+func TestSnapConfigEmpty(t *testing.T) {
+	Convey("Test Config", t, func() {
+		Convey("with empty plugin config sections", func() {
+			cfg := getDefaultConfig()
+			readConfig(cfg, "./examples/configs/snap-config-empty.yaml")
+			jb, _ := json.Marshal(cfg)
+			serrs := cfgfile.ValidateSchema(CONFIG_CONSTRAINTS, string(jb))
+			So(len(serrs), ShouldEqual, 0)
+		})
+	})
+}
+
 type mockFlags map[string]string
 
 func (m mockFlags) String(key string) string {
@@ -233,7 +245,7 @@ func Test_checkCmdLineFlags(t *testing.T) {
 	}{
 		{name: "CmdlineArgsParseWell",
 			msg: func(f func(string)) {
-				f("Having valid command line flags, parsing suceeds")
+				f("Having valid command line flags, parsing succeeds")
 			},
 			ctx:            testCtx.getCopy(),
 			wantErr:        false,
@@ -241,7 +253,7 @@ func Test_checkCmdLineFlags(t *testing.T) {
 			wantPortInAddr: false},
 		{name: "CmdlineArgsWithoutTLSConfigParseWell",
 			msg: func(f func(string)) {
-				f("Having valid command line flags without any TLS parameters, parsing suceeds")
+				f("Having valid command line flags without any TLS parameters, parsing succeeds")
 			},
 			ctx: testCtx.
 				copyWithout("tls-cert", "tls-key", "ca-cert-paths", "api-port").

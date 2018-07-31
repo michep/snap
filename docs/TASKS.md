@@ -52,6 +52,7 @@ The schedule describes the schedule type and interval for running the task. At t
  - [simple](#simple-schedule) 
  - [windowed](#windowed-schedule) 
  - [cron](#cron-schedule)
+ - [streaming] (#streaming-schedule)
  
 Snap is designed in a way where custom schedulers can easily be dropped in. If a custom schedule is used, it may require more key/value pairs in the schedule section of the manifest.  
   
@@ -176,8 +177,16 @@ Snap is designed in a way where custom schedulers can easily be dropped in. If a
       "max-failures": 10,
    ```
   
-    
-    
+##### Streaming Schedule
+```yaml
+   ---
+  version: 1
+  schedule:
+    type: "streaming"
+```
+The streaming schedule doesn't support fields such as `interval` and `count`. If those fields are provided as part of the schedule, they will simply be skipped. 
+For more details on streaming, visit [STREAMING.md](STREAMING.md)
+
 #### Max-Failures
 
 By default, Snap will disable a task if there are 10 consecutive errors from any plugins within the workflow.  The configuration
@@ -322,9 +331,7 @@ Declaring a metric's name exactly as it appears in the metric catalog (see `snap
 Metrics requested in task manifest          | Collected metrics
 --------------------------------------------|------------------------
 /intel/mock/foo                             |  /intel/mock/foo
-|
 /intel/mock/bar                             |  /intel/mock/bar
-|
 /intel/mock/\*/baz <br/> _(dynamic metric)_ |  /intel/mock/host0/baz <br/> /intel/mock/host1/baz <br/> /intel/mock/host2/baz  <br/> /intel/mock/host3/baz  <br/> /intel/mock/host4/baz <br/> /intel/mock/host5/baz <br/> /intel/mock/host6/baz <br/> /intel/mock/host7/baz  <br/> /intel/mock/host8/baz <br/> /intel/mock/host9/baz <br/><br/> _(collect metrics for all instances of the dynamic metric)_
 
  
@@ -349,9 +356,7 @@ Dynamic queries are those that contain:
 Metrics requested in task manifest  | Collected metrics
 ------------------------------------|------------------------
 /intel/mock/*                       | /intel/mock/foo <br/> /intel/mock/bar <br/> /intel/mock/host0/baz <br/> /intel/mock/host1/baz <br/> /intel/mock/host2/baz  <br/> /intel/mock/host3/baz  <br/> /intel/mock/host4/baz <br/> /intel/mock/host5/baz <br/> /intel/mock/host6/baz <br/> /intel/mock/host7/baz  <br/> /intel/mock/host8/baz <br/> /intel/mock/host9/baz <br/> <br/> _(collect all metrics with prefix "/intel/mock/")_
-|
 /intel/mock/(foo;bar)               | /intel/mock/foo <br/> /intel/mock/bar
-|
 /intel/mock/(host0;host1;host2)/baz | /intel/mock/host0/baz <br/> /intel/mock/host1/baz <br/> /intel/mock/host2/baz <br/>
 
 The namespaces are keys to another nested object which may contain a specific version of a plugin, e.g.:
