@@ -28,6 +28,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -402,7 +403,7 @@ func (p *pluginControl) Start() error {
 				if strings.HasSuffix(fileName, ".aci") || !(strings.HasSuffix(fileName, ".asc")) {
 					// check to makd sure the file is executable by someone (even if it isn't you); if no one
 					// can execute this file then skip it (and include a warning in the log output)
-					if (statCheck.Mode() & 0111) == 0 {
+					if runtime.GOOS != "windows" && (statCheck.Mode() & 0111) == 0 {
 						controlLogger.WithFields(log.Fields{
 							"_block":           "start",
 							"autodiscoverpath": pa,
